@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Apoyos - Menú Principal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #3a8dde 0%, #6a82fb 100%);
+            min-height: 100vh;
+        }
+        .menu-card {
+            background: rgba(240, 248, 255, 0.92); /* azul muy claro, más translúcido */
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(60, 90, 180, 0.15);
+            transition: transform 0.3s ease;
+            min-width: 420px;
+            max-width: 700px;
+            min-height: 80vh;
+            margin: 32px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        @media (max-width: 768px) {
+            .menu-card {
+                min-width: unset;
+                max-width: 98vw;
+                min-height: 60vh;
+                padding: 2rem 0.5rem;
+            }
+        }
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+        .btn-option {
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-queue {
+            background: linear-gradient(45deg, #43cea2, #185a9d);
+            border: none;
+            color: white;
+        }
+        .btn-queue:hover {
+            background: linear-gradient(45deg, #185a9d, #43cea2);
+            transform: scale(1.05);
+            color: white;
+        }
+        .btn-stack {
+            background: linear-gradient(45deg, #6a82fb, #3a8dde);
+            border: none;
+            color: white;
+        }
+        .btn-stack:hover {
+            background: linear-gradient(45deg, #3a8dde, #6a82fb);
+            transform: scale(1.05);
+            color: white;
+        }
+        h1.text-primary {
+            color: #3a8dde !important;
+        }
+        .lead.text-muted {
+            color: #185a9d !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid d-flex align-items-center justify-content-center min-vh-100">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="menu-card p-5 text-center">
+                    <h1 class="mb-4 text-primary">
+                        <i class="fas fa-hands-helping me-3"></i>
+                        Sistema de Apoyos
+                    </h1>
+                    <p class="lead mb-5 text-muted">
+                        Gestión de tarjetas de apoyo y historial 
+                    </p>
+                    
+                    <div class="row g-4 flex-column">
+                        <div class="col-12 mb-3">
+                            <div class="d-grid">
+                                <a href="/cola" class="btn btn-option btn-queue">
+                                    <i class="fas fa-queue me-2"></i>
+                                    Entregar Tarjetas
+                                    <br>
+                                    <small>(Cola)</small>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-grid">
+                                <a href="/pila" class="btn btn-option btn-stack">
+                                    <i class="fas fa-layer-group me-2"></i>
+                                    Historial de Apoyos
+                                    <br>
+                                    <small>(Pila)</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

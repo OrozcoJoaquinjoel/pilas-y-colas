@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cola de Tarjetas - Sistema de Apoyos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #3a8dde 0%, #6a82fb 100%);
+            min-height: 100vh;
+        }
+        .main-card {
+            background: rgba(240, 248, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(60, 90, 180, 0.15);
+        }
+        .queue-item {
+            background: linear-gradient(45deg, #b2f0ff, #d6d6ff);
+            border-radius: 10px;
+            margin: 5px 0;
+            padding: 10px 15px;
+            border-left: 5px solid #3a8dde;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .btn-action {
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-add {
+            background: linear-gradient(45deg, #6a82fb, #3a8dde);
+            border: none;
+            color: white;
+        }
+        .btn-add:hover {
+            background: linear-gradient(45deg, #3a8dde, #6a82fb);
+            transform: scale(1.05);
+            color: white;
+        }
+        .btn-process {
+            background: linear-gradient(45deg, #43cea2, #185a9d);
+            border: none;
+            color: white;
+        }
+        .btn-process:hover {
+            background: linear-gradient(45deg, #185a9d, #43cea2);
+            transform: scale(1.05);
+            color: white;
+        }
+        .message {
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card.bg-light {
+            background: rgba(220, 240, 255, 0.85) !important;
+        }
+        .text-danger {
+            color: #3a8dde !important;
+        }
+        .text-success {
+            color: #185a9d !important;
+        }
+        .text-primary {
+            color: #185a9d !important;
+        }
+        .text-warning {
+            color: #6a82fb !important;
+        }
+        .text-info {
+            color: #43cea2 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="main-card p-4">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="text-danger mb-0">
+                            <i class="fas fa-queue me-3"></i>
+                            Cola de Tarjetas
+                        </h1>
+                        <a href="/menu" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Volver al Menú
+                        </a>
+                    </div>
+
+                    <!-- Mensaje de estado -->
+                    {% if mensaje %}
+                    <div class="message alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        {{ mensaje }}
+                    </div>
+                    {% endif %}
+
+                    <!-- Estadísticas -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card bg-light border-0">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-danger">
+                                        <i class="fas fa-users me-2"></i>
+                                        Personas en Cola
+                                    </h5>
+                                    <h2 class="text-danger">{{ tamano }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light border-0">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-success">
+                                        <i class="fas fa-clock me-2"></i>
+                                        Estado
+                                    </h5>
+                                    <h6 class="text-success">
+                                        {% if tamano > 0 %}
+                                            <i class="fas fa-play-circle me-2"></i>
+                                            Activa
+                                        {% else %}
+                                            <i class="fas fa-pause-circle me-2"></i>
+                                            Vacía
+                                        {% endif %}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario para agregar persona -->
+                    <div class="card mb-4 border-0 bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Agregar Persona a la Cola
+                            </h5>
+                            <form method="POST" class="row g-3">
+                                <div class="col-md-8">
+                                    <input type="text" 
+                                           class="form-control" 
+                                           name="persona" 
+                                           placeholder="Ingrese el nombre de la persona"
+                                           required>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" 
+                                            name="agregar_persona" 
+                                            class="btn btn-action btn-add w-100">
+                                        <i class="fas fa-plus me-2"></i>
+                                        Agregar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Recuadro de personas añadidas (mover aquí) -->
+                    <div class="card mb-4 border-0 bg-info-subtle shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">
+                                <i class="fas fa-users me-2"></i>
+                                Personas en la Cola
+                            </h5>
+                            {% if cola %}
+                                <ul class="list-group">
+                                    {% for persona in cola %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-user me-2"></i>{{ persona }}</span>
+                                        <form method="POST" style="margin:0;">
+                                            <input type="hidden" name="eliminar_persona" value="{{ loop.index0 }}">
+                                            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <div class="text-center py-2 text-muted">No hay personas en la cola</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Botón para procesar tarjeta -->
+                    <div class="card mb-4 border-0 bg-light">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-warning">
+                                <i class="fas fa-ticket-alt me-2"></i>
+                                Procesar Tarjeta
+                            </h5>
+                            <p class="card-text text-muted">
+                                Entrega la tarjeta de apoyo a la primera persona en la cola
+                            </p>
+                            <form method="POST" class="d-inline">
+                                <button type="submit" 
+                                        name="procesar_tarjeta" 
+                                        class="btn btn-action btn-process"
+                                        {% if tamano == 0 %}disabled{% endif %}>
+                                    <i class="fas fa-hand-holding-heart me-2"></i>
+                                    Entregar Tarjeta
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Visualización de la cola -->
+                    <!-- Eliminar esta sección duplicada para que solo se muestre la lista en el recuadro destacado -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
