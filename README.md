@@ -32,7 +32,7 @@ La interfaz es moderna y responsiva gracias a **Bootstrap**, permitiendo agregar
 ```bash
 # 1. (Opcional) Crea un entorno virtual
 python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+source venv/bin/activate  
 
 # 2. Instala las dependencias
 pip install -r requirements.txt
@@ -58,13 +58,5 @@ http://localhost:5000
 - HTML5 + CSS3
 
 ---
-
-## 📦 Instalación rápida
-
-```bash
-# Clona el repositorio
-# Instala dependencias
-# Ejecuta la app
-```
 
 
